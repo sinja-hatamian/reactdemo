@@ -17,6 +17,20 @@ export default class App extends Component {
     }
   }
 
+  toggleTodo = (todo) => this.setState({
+    todoItems: this.state.todoItems.map
+      (item => item.action === todo.action ? { ...item, done: !item.done } : item)
+  });
+  todoTableRows = () => this.state.todoItems.map
+    (item =>
+      <tr key={item.action}>
+        <td> {item.action} </td>
+        <td>
+          <input type="checkbox" checked={item.done} onChange={() => this.toggleTodo(item)} />
+        </td>
+      </tr>
+
+    )
   updateNewTextValue = (event) => {
     this.setState({ newItemText: event.target.value });
   }
@@ -33,13 +47,12 @@ export default class App extends Component {
     }
   }
 
-
   render() {
     return (
       <div className="bg-success text-white text-center">
         <h4>
-          {this.state.username}'s ToDo list
-          ({this.state.todoItems.filter(t=> !t.done).length}) items to do
+          {this.state.username} you have
+          ({this.state.todoItems.filter(t => !t.done).length}) uncomplete tasks
           <div className="container-fludi">
             <div className="m-1">
               <input className="form-control"
@@ -48,6 +61,22 @@ export default class App extends Component {
               <button className="btn btn-danger mt-1" onClick={this.createNewTodo}>
                 Add new item
               </button>
+
+              <table className="table table-success table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>ToDo task name</th>
+                    <th>Done</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.todoTableRows()}
+                </tbody>
+
+
+              </table>
+
+
             </div>
           </div>
         </h4>
